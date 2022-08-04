@@ -15,7 +15,15 @@ alter table brandEndorsement add bname nvarchar(30) foreign key references brand
 alter procedure sp_groupbybname
 as
 begin
+  --common brand
   select bname,count(celebrityname) from brandEndorsement group by bname
+  --common celebrity
+  select distinct c.cname,count(e.bid) as NumberOfCelebrity
+from brandEndorsement as e
+inner join celebrity c on c.cid=e.bid
+group by c.cname
+--not endoreced by celebrity
+select celebrityname,bname from brandEndorsement where celebrityname is null 
 end
 
 exec sp_groupbybname
