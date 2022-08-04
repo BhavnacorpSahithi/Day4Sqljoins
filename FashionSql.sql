@@ -17,17 +17,31 @@ as
 begin
   --common brand
   select bname,count(celebrityname) from brandEndorsement group by bname
-  --common celebrity
+  
+end
+exec sp_groupbybname
+
+create procedure sp_groupbycelebrityname
+as
+begin
+--common celebrity
   select distinct c.cname,count(e.bid) as NumberOfCelebrity
 from brandEndorsement as e
 inner join celebrity c on c.cid=e.bid
 group by c.cname
+end
+
+exec sp_groupbycelebrityname
+
+
+create procedure sp_groupbynotendorced
+as
+begin
 --not endoreced by celebrity
 select celebrityname,bname from brandEndorsement where celebrityname is null 
 end
 
-exec sp_groupbybname
-
+exec sp_groupbynotendorced
 --------------------------------
 alter procedure sp_getbranddetails
 as
